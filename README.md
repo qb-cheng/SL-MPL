@@ -19,17 +19,17 @@ Qingbei Cheng<sup>1,+</sup>, Muhammad Saqib Sohail<sup>2,+,*</sup>, and Matthew 
 
 # Contents
 
-The codes were written in Python, with the required environment specifications provided in "environment.yml."
+The code is written in Python, with the required environment specifications provided in the "environment.yml" file.
 
 The scripts for generating and analyzing simulation data are identified by their respective file names.
 
-To generate evolutionary trajectories under the Wright-Fisher model, first define a set ID within the evolutionary parameters in "GetCaseArg.py" and then execute "EvoGen.py" using that set ID. The simulated Wright-Fisher trajectories should be stored in the "PopRecords" folder.
+To generate evolutionary trajectories under the Wright-Fisher model, first define a set ID within the evolutionary parameters in "GetCaseArg.py," and then execute "EvoGen.py" using that set ID. The simulated Wright-Fisher trajectories will be stored in the "PopRecords" folder.
 
-Results related to the MPL-based estimator can subsequently be produced for the main and supplementary figures.
+Results pertaining to the MPL-based estimator can subsequently be generated for both the main and supplementary figures.
 
-To obtain estimates using the Hidden Markov Model (HMM) framework, which serves as an extension of MPL, execute "MPL_HMM.py" initially.
+To obtain estimates using the Hidden Markov Model (HMM) framework, which serves as an extension of MPL, begin by executing "MPL_HMM.py."
 
-Example figures are located in the "Figure" folder, while example HMM-based estimates can be found in the "ModelComp" folder.
+Example figures are available in the "Figure" folder, while example HMM-based estimates can be found in the "ModelComp" folder.
 
 # License
 
