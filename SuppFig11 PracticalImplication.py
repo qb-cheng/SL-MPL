@@ -23,7 +23,7 @@ Palette = sns.color_palette('Set1')
 
 dt = 10
 ns = 20
-T_interests = [51,101,151]
+T_interests = [51,151,301]
 N_indices = [0,1,2] # Different values of population sizes used to simulate the WF trajectories
 
 x_values = np.linspace(0.005,0.0525,1001)
