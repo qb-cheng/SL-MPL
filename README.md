@@ -5,7 +5,7 @@ This repository contains codes and data for reproducing the results in the paper
 ### The effects of limited sampling and genetic drift on selection coefficient estimation from genetic time-series data
 doi:
 
-Qingbei Cheng<sup>1,+</sup>, Muhammad Saqib Sohail<sup>2,+,*</sup>, and Matthew R. McKay<sup>3,4,#</sup>
+Qingbei Cheng<sup>1,+</sup>, Muhammad Saqib Sohail<sup>2,+,#</sup>, and Matthew R. McKay<sup>3,4,#</sup>
 
 <sup>1</sup> Department of Electronic and Computer Engineering, Hong Kong University of Science and Technology, Hong Kong SAR, China.
 
