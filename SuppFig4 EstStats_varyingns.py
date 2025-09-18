@@ -9,10 +9,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker 
 import seaborn as sns
+from scipy.optimize import curve_fit
  
 
 save_flag = True
-dpi_val = 350
+dpi_val = 600
 FontSize = 14
 MarkerSize = 2
 lw = 1.5
@@ -94,9 +95,10 @@ cur_ax.yaxis.set_major_locator(ticker.MultipleLocator(0.01))
     
 # Estimator variance in terms of ns
 cur_ax = axes[1]
-ref_ns = est_var_TimeVarying[-1,0] * lambda_nss[0] / lambda_nss
+EmpiVar_ns_log = np.log(est_var_TimeVarying[-1])
+popt_ns = curve_fit(Functions.ns_fit_model, np.log(lambda_nss), EmpiVar_ns_log, p0=EmpiVar_ns_log[0])
 cur_ax.semilogy(lambda_nss,est_var_TimeVarying[-1],linewidth=lw,color=Palette[1],label='Var$[\\^s]$',zorder=1)
-cur_ax.semilogy(lambda_nss,ref_ns,linewidth=lw,linestyle='--',color='grey',label='Scaled $\overline{n}_s^{-1}$',zorder=2)
+cur_ax.semilogy(lambda_nss,np.exp(popt_ns[0])/lambda_nss,linewidth=lw,linestyle='--',color='grey',label='Scaled $\overline{n}_s^{-1}$',zorder=2)
 cur_ax.set_xlim((0,np.max(lambda_nss)+10))
 cur_ax.set_ylim((1e-7,1e-4))
 cur_ax.set_xlabel('Mean sample size, $\overline{n}_s$',fontsize=FontSize)
@@ -108,9 +110,10 @@ cur_ax.legend(frameon=False,fontsize=FontSize,loc=1) #,bbox_to_anchor=(1, 0.9)
 
 # Estimator variance in terms of V
 cur_ax = axes[2]
-ref_IV = est_var_TimeVarying[3,np.where(lambda_nss == ns_interest)[0][0]] * DeterIV[3]**2 / (DeterIV**2)
+EmpiVar_V_log = np.log(est_var_TimeVarying[:,np.where(lambda_nss == ns_interest)[0][0]])
+popt_V = curve_fit(Functions.V_fit_model, np.log(DeterIV), EmpiVar_V_log, p0=EmpiVar_V_log[0])
 cur_ax.semilogy(DeterIV,est_var_TimeVarying[:,np.where(lambda_nss == ns_interest)[0][0]],linewidth=lw,color=Palette[1],label='Var$[\\^s]$',zorder=1)
-cur_ax.semilogy(DeterIV,ref_IV,linewidth=lw,linestyle='--',color='grey',label='Scaled $V^{-2}$',zorder=2)
+cur_ax.semilogy(DeterIV,np.exp(popt_V[0])/(DeterIV**2),linewidth=lw,linestyle='--',color='grey',label='Scaled $V^{-2}$',zorder=2)
 cur_ax.set_xlim((0,np.max(DeterIV)+2))
 cur_ax.set_ylim((1e-6,1e-2))
 cur_ax.set_xlabel('Integrated variance, $V$',fontsize=FontSize)
@@ -136,4 +139,4 @@ cur_ax.set_position([x_pos[0]+0.02, y_pos[0], x_pos[1]-x_pos[0], y_pos[1]-y_pos[
 
 
 if save_flag:
-    plt.savefig('./Figures/SuppFig4_TimeVarying_ns.jpg',dpi=dpi_val,bbox_inches='tight')  
+    plt.savefig('./Figures/SuppFig4_TimeVarying_ns.pdf',dpi=dpi_val,bbox_inches='tight')  

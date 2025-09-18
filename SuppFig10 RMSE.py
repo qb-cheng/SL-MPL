@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker 
 
 save_flag = True
-dpi_val = 350
+dpi_val = 600
 
 FontSize = 14
 MarkerSize = 4
@@ -118,4 +118,4 @@ plt.tight_layout()
 plt.subplots_adjust(wspace=1.5/15,hspace=1.5/17)
 
 if save_flag:
-    plt.savefig('./Figures/SuppFig10_EstComp_RMSE.jpg',dpi=dpi_val,bbox_inches='tight')  
+    plt.savefig('./Figures/SuppFig10_EstComp_RMSE.pdf',dpi=dpi_val,bbox_inches='tight')  

@@ -1,190 +1,135 @@
 # -*- coding: utf-8 -*-
 """
-Plot the empirical and analytical estimator mean and variance,
-in the deterministic scenario under the effect of limited sampling.
-Show that the mean is close to the true selection coefficient, while the variance follows the scaling we analyzed.
+Plot the performance of the MPL-based estimator under limited sampling effect.
 """
-
 
 import Functions,GetCaseArg
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
+import matplotlib.ticker as ticker 
 import seaborn as sns
+import pandas as pd
 
 
 save_flag = True
-
-dpi_val = 350
+dpi_val = 600
 FontSize = 16
-MarkerSize = 4
+MarkerSize = 6
 lw = 1.5
 
-
-dt = 10
-MCRun = 1000000
-
-
+xmin = -0.02
+xmax = 0.06
 
 thisSet = 11
 N,u,s,x0,NumItr,T = GetCaseArg.GetCaseInfo(thisSet)
 
-
+dt = 10
 t = np.arange(0,T,dt)
 
-InterestingLengths = np.arange(50,T,50) # np.array([50,100,150,300,450])
-
-DeterTraj = Functions.DeterministicTrajectory(s,x0,T,u)
-DeterIV = Functions.ComputeIV(DeterTraj[t], dt)
-
-
-ns = 20
-
-Palette = sns.color_palette('Set1')
+lambda_nss = [10,20]
+T_interests = [151,301,451]
+MCRun = 10000
 
 
 
-fig,axes = plt.subplots(1,3,figsize=(15,4.5),dpi=dpi_val) 
+SampleSizes = np.zeros((len(t),MCRun,len(lambda_nss)))
 
+Palette = sns.color_palette('Set2')
 
-# Plot estimator mean from observations of mutant allele frequency trajectory under deterministic evolutionary model
-cur_ax = axes[0]
-Sampledtrajs = Functions.SampleTrajectory(DeterTraj[t], ns, MCRun)
-s_FS = Functions.SLMPL(Sampledtrajs, dt, ns, u)
-EmpiMean = np.zeros(s_FS.shape[0])  
-for t_idx in range(s_FS.shape[0]):
-    cur_ests = s_FS[t_idx,:]
-    cur_ests = cur_ests[np.isfinite(cur_ests)]
-    EmpiMean[t_idx] = np.mean(cur_ests)
+fig,axes = plt.subplots(1,2,figsize=(15,4),dpi=dpi_val)
 
+DeterTraj = Functions.DeterministicTrajectory(s, x0, T, u)
+ObTraj_examples = np.zeros((len(t),len(lambda_nss)))
 
-# Get analytical estimator mean from 2nd order multivariate Taylor series expansion
-ED,EV,VarD,CovDV,VarV = Functions.TaylorTerms(DeterTraj[t], dt, ns, u)
-TheoMean = ED/EV #- CovDV/EV**2 + (ED/EV)*VarV/EV**2
-# cur_ax.plot(DeterIV[(InterestingLengths/dt).astype(int) - 2],TheoMean[(InterestingLengths/dt).astype(int) - 2],linestyle='None',marker='^',ms=MarkerSize,color=CustomizedColor[ns_idx])
+axes[0].plot(t,DeterTraj[t],linewidth=lw,color='gray',label='Population')
 
-cur_ax.plot(DeterIV,EmpiMean,label='E$[\\^s]$',color=Palette[4],linewidth=lw)
-cur_ax.plot(DeterIV,TheoMean,color=Palette[3],linewidth=lw,label='$\\^s_{\\mathrm{MPL}}$',linestyle="--")
+df_est = pd.DataFrame()
+estimates = []
+est_type = []
+TrajLen = []
+SampleSize_Lambda = []
 
-cur_ax.axhline(y = s, color ="gray", linestyle ="dotted",linewidth=lw,label='True selection\ncoefficient $s$')
-cur_ax.legend(fontsize=FontSize,frameon=False,loc=1) #,bbox_to_anchor=(1, 0.85)
-cur_ax.set_xlabel('Integrated variance, $V$',fontsize=FontSize)
-cur_ax.set_ylabel('Estimator mean',fontsize=FontSize)
-cur_ax.set_xlim((0,np.max(DeterIV)+2))
-cur_ax.set_ylim((0.01,0.04))
-cur_ax.tick_params(axis='x', labelsize=FontSize)
-cur_ax.tick_params(axis='y', labelsize=FontSize)
-cur_ax.xaxis.set_major_locator(ticker.MultipleLocator(10))
-cur_ax.yaxis.set_major_locator(ticker.MultipleLocator(0.01))
+for ns_idx,lambda_ns in enumerate(lambda_nss):
+    for MCidx in range(MCRun):
+        cur_ns = np.random.poisson(lambda_ns, len(t))
+        while any(cur_ns < 2):
+            cur_ns = np.random.poisson(lambda_ns, len(t))
+        SampleSizes[:,MCidx,ns_idx] = cur_ns
 
-
-
-
-
-
-
-# Plot estimator variance with respect to sample size, and with respect to integrated variance
-ns_vals = np.arange(10,201,10)
-ref_ns = 1/ns_vals
-
-
-# Estimator variance in terms of ns
-cur_ax = axes[1]
-
-EmpiVar_ns = np.zeros(len(ns_vals))
-AnalyticalVar_ns = np.zeros(len(ns_vals))
-for ns_idx,cur_ns in enumerate(ns_vals):
-    SampledTrajs = Functions.SampleTrajectory(DeterTraj[t],cur_ns,MCRun)
+        cur_ObTraj = np.zeros(len(t))
+        for t_idx in range(len(t)):
+            cur_ObTraj[t_idx] = np.random.binomial(cur_ns[t_idx], DeterTraj[t[t_idx]]) / cur_ns[t_idx]
+            
+        for T_idx,cur_T in enumerate(T_interests):
+            cur_t = t[t < cur_T]
+            cur_dt = cur_t[1:] - cur_t[:-1]
+            
+            seg_cur_ObTraj = cur_ObTraj[t < cur_T]
+            seg_cur_ns = cur_ns[t < cur_T]
+            
+            Dhat = seg_cur_ObTraj[-1] - seg_cur_ObTraj[0] - u*np.sum(cur_dt*(1-2*seg_cur_ObTraj[:-1]))
+            Vhat = np.sum(cur_dt * seg_cur_ObTraj[:-1] * (1 - seg_cur_ObTraj[:-1]))
+            Vhat_corrected = np.sum(cur_dt * seg_cur_ObTraj[:-1] * (1 - seg_cur_ObTraj[:-1]) * seg_cur_ns[:-1] / (seg_cur_ns[:-1]-1))
+            
+            s_MPL = Dhat / Vhat
+            s_FS = Dhat / Vhat_corrected
+            
+            estimates.append(s_FS)
+            est_type.append('$\^s$')
+            TrajLen.append(cur_T-1)
+            SampleSize_Lambda.append('$\overline{n}_s = $'+str(lambda_ns))
+            
+            estimates.append(s_MPL)
+            est_type.append('$\^s_{\mathrm{MPL}}$')
+            TrajLen.append(cur_T-1)
+            SampleSize_Lambda.append('$\overline{n}_s = $'+str(lambda_ns))
+            
     
-    D_hat = SampledTrajs[-1,:] - SampledTrajs[0,:] - u*dt*np.sum(1-2*SampledTrajs[:-1,:],axis=0)
-    V_hat = dt * np.sum(SampledTrajs[:-1,:]*(1-SampledTrajs[:-1,:]),axis=0) / (1-1/cur_ns)
-    sFS = D_hat / V_hat
-    sFS = sFS[np.isfinite(sFS)]
-    EmpiVar_ns[ns_idx] = np.var(sFS)
+    ObTraj_examples[:,ns_idx] = cur_ObTraj
+    # axes[0].plot(cur_t,cur_ObTraj,label='Observations ($\overline{n}_s = $'+str(lambda_ns)+')',color=Palette[ns_idx],linewidth=lw,zorder=1)
+    axes[0].plot(cur_t,cur_ObTraj,label='Observations ($\overline{n}_s = $'+str(lambda_ns)+')',color=Palette[ns_idx],linewidth=lw,zorder=1,marker='.',ms=MarkerSize)
+    
+
+df_est['estimates'] = estimates
+df_est['est_type'] = est_type
+df_est['Trajectory length'] = TrajLen
+df_est['Sample size'] = SampleSize_Lambda
+
+df_est = df_est[np.isfinite(df_est["estimates"])]
+   
+axes[0].set_xlim((0,T+9))
+axes[0].set_ylim((-0.05,1.05))
+axes[0].tick_params(axis='x', labelsize=FontSize)
+axes[0].tick_params(axis='y', labelsize=FontSize)   
+axes[0].set_xlabel('Generation, $t$',fontsize=FontSize)
+axes[0].set_ylabel('Mutant allele frequency',fontsize=FontSize)
+axes[0].legend(fontsize=FontSize,loc=4,frameon=False)
+axes[0].xaxis.set_major_locator(ticker.MultipleLocator(150))
+axes[0].yaxis.set_major_locator(ticker.MultipleLocator(0.2))    
     
     
-    ED,EV,VarD,CovDV,VarV = Functions.TaylorTerms(DeterTraj[t],dt,cur_ns,u)
-    AnalyticalVar_ns[ns_idx] = (VarD/EV**2 - 2*(ED/EV)*CovDV/EV**2 + (ED/EV)**2*VarV/EV**2)[-1]
+    
+    
+violin = sns.violinplot(data=df_est[df_est['est_type'] == '$\^s$'], x='Trajectory length', y='estimates', hue='Sample size', split=True, inner="quart", linewidth=lw, ax=axes[1], palette=Palette[:2], cut=0, alpha=0.8, scale='area')
 
-ref_ns = ref_ns / ref_ns[0] * EmpiVar_ns[0]
+axes[1].axhline(y=s, color ='gray', linestyle ="dotted",linewidth=lw,label='True selection\ncoefficient $s$')
+axes[1].set_xlabel('Trajectory length, $T$',fontsize=FontSize)
+axes[1].set_ylabel('Selection coefficient\nestimate, $\\^s$',fontsize=FontSize)
+axes[1].set_ylim((xmin,xmax))
+axes[1].yaxis.set_major_locator(ticker.MultipleLocator(0.02))
+axes[1].tick_params(axis='x', labelsize=FontSize)
+axes[1].tick_params(axis='y', labelsize=FontSize)
+axes[1].legend(fontsize=FontSize,frameon=False,loc=4)#,ncol=2
 
-
-# cur_ax.semilogy(ns_vals,EmpiVar_ns,linewidth=lw,color='C2',label='Empirical',zorder=1)
-# cur_ax.semilogy(InterestingSampleSize,InterestingEstVar,marker="^",ms=MarkerSize,linestyle='None',color='C2',label='Analytical',zorder=3)
-# cur_ax.semilogy(ns_vals,AnalyticalVar_ns,linewidth=lw,color='C9',label='Analytical',zorder=1)
-# cur_ax.semilogy(InterestingSampleSize,InterestingEstVar,marker="^",ms=MarkerSize,linestyle='None',color='C9',label='Empirical',zorder=3)
-cur_ax.semilogy(ns_vals,EmpiVar_ns,linewidth=lw,color=Palette[1],label='Empirical Var[$\\^s$]')
-cur_ax.semilogy(ns_vals,AnalyticalVar_ns,linewidth=lw,color=Palette[0],label='Analytical Var[$\\^s$]',linestyle='none',marker='o',ms=MarkerSize)
-cur_ax.semilogy(ns_vals,ref_ns,linewidth=lw,linestyle='--',color='grey',label='Scaled $n_s^{-1}$',zorder=3)
-cur_ax.set_xlim((0,np.max(ns_vals)+10))
-cur_ax.set_ylim((1e-7,1e-4))
-cur_ax.set_xlabel('Sample size, $n_s$',fontsize=FontSize)
-cur_ax.set_ylabel('Estimator variance',fontsize=FontSize)
-cur_ax.xaxis.set_major_locator(ticker.MultipleLocator(50))
-cur_ax.tick_params(axis='x', labelsize=FontSize)
-cur_ax.tick_params(axis='y', labelsize=FontSize)
-cur_ax.legend(frameon=False,fontsize=FontSize,loc=1) #,bbox_to_anchor=(1, 0.9)
-
-
-
-
-# Estimator variance in terms of V
-
-cur_ax = axes[2]
-SampledTrajs = Functions.SampleTrajectory(DeterTraj[t],ns,MCRun)
-sFS_all = Functions.SLMPL(SampledTrajs,dt,ns,u)
-
-EmpiVar_V = np.zeros(sFS_all.shape[0])
-for t_idx,CurEst in enumerate(sFS_all):
-    CurEst = CurEst[np.isfinite(CurEst)]
-    EmpiVar_V[t_idx] = np.var(CurEst)
-
-ED,EV,VarD,CovDV,VarV = Functions.TaylorTerms(DeterTraj[t],dt,ns,u)
-AnalyticalVar_V = (VarD/EV**2 - 2*(ED/EV)*CovDV/EV**2 + (ED/EV)**2*VarV/EV**2)
-
-
-ref_IV = DeterIV ** (-2)
-# ref_IV = ref_IV / ref_IV[0] * EmpiVar_V[0]
-ref_IV = ref_IV / ref_IV[np.where(t == InterestingLengths[2])[0][0] - 2] * EmpiVar_V[np.where(t == InterestingLengths[2])[0][0] - 2]
-
-InterestingEstVar = np.zeros(len(InterestingLengths))
-InterestingV = np.zeros(len(InterestingLengths))
-for T_idx,T_interest in enumerate(InterestingLengths):
-    InterestingV[T_idx] = DeterIV[np.where(t == T_interest)[0][0] - 2]
-    InterestingEstVar[T_idx] = AnalyticalVar_V[np.where(t == T_interest)[0][0] - 2]
-    # InterestingEstVar[T_idx] = EmpiVar_V[np.where(t == T_interest)[0][0] - 2]
-
-# cur_ax.semilogy(DeterIV,EmpiVar_V,linewidth=lw,color='C2',label='Empirical',zorder=1)
-# cur_ax.semilogy(InterestingV,InterestingEstVar,marker="^",ms=MarkerSize,linestyle='None',color='C2',label='Analytical',zorder=3)
-# cur_ax.semilogy(DeterIV,AnalyticalVar_V,linewidth=lw,color='C9',label='Analytical',zorder=1)
-# cur_ax.semilogy(InterestingV,InterestingEstVar,marker="^",ms=MarkerSize,linestyle='None',color='C9',label='Empirical',zorder=3)
-cur_ax.semilogy(DeterIV,EmpiVar_V,linewidth=lw,color=Palette[1],label='Empirical Var[$\\^s$]')
-# cur_ax.semilogy(DeterIV,AnalyticalVar_V,linewidth=lw,color=Palette[3],label='Analytical Var[$\^s_{\mathrm{FS}}$]',linestyle='none',marker='o',ms=MarkerSize)
-cur_ax.semilogy(InterestingV,InterestingEstVar,linewidth=lw,color=Palette[0],label='Analytical Var[$\\^s$]',linestyle='none',marker='o',ms=MarkerSize)
-cur_ax.semilogy(DeterIV,ref_IV,linewidth=lw,linestyle='--',color='grey',label='Scaled $V^{-2}$',zorder=3)
-cur_ax.set_xlim((0,np.max(DeterIV)+2))
-cur_ax.set_ylim((1e-6,1e-2))
-cur_ax.set_xlabel('Integrated variance, $V$',fontsize=FontSize)
-cur_ax.set_ylabel('',fontsize=FontSize)
-cur_ax.xaxis.set_major_locator(ticker.MultipleLocator(10))
-cur_ax.tick_params(axis='x', labelsize=FontSize)
-cur_ax.tick_params(axis='y', labelsize=FontSize)
-cur_ax.legend(frameon=False,fontsize=FontSize,loc=1) #,bbox_to_anchor=(1,0.9)
-
-
-
-axes[0].text(-0.17,1.15,'A',fontsize=18,transform=axes[0].transAxes,fontweight='bold',va='top',ha='right')
-axes[1].text(-0.175,1.15,'B',fontsize=18,transform=axes[1].transAxes,fontweight='bold',va='top',ha='right')
-
+handles, labels = axes[1].get_legend_handles_labels()
+legend1 = plt.legend(handles[:2], labels[:2], loc='lower center', bbox_to_anchor=(0.35,0), fontsize=FontSize, frameon=False)
+legend2 = plt.legend(handles[2:], labels[2:], loc='lower right', bbox_to_anchor=(1,0), fontsize=FontSize, frameon=False)
+axes[1].add_artist(legend1)
 
 
 plt.tight_layout()
-
-cur_ax = axes[1]
-x_pos = cur_ax.get_position().intervalx
-y_pos = cur_ax.get_position().intervaly
-cur_ax.set_position([x_pos[0]+0.02, y_pos[0], x_pos[1]-x_pos[0], y_pos[1]-y_pos[0]])
+plt.subplots_adjust(wspace=0.4)
 
 
 if save_flag:
-    plt.savefig('./Figures/Fig2_EstMeanVarDeter.jpg',dpi=dpi_val,bbox_inches='tight')
+    plt.savefig('./Figures/Fig2_EstPerf.pdf',dpi=dpi_val,bbox_inches='tight')  

@@ -10,10 +10,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import seaborn as sns
+from scipy.optimize import curve_fit
 
 save_flag = True
 
-dpi_val = 350
+dpi_val = 600
 
 FigSizeR = 4
 FontSize = 14
@@ -33,7 +34,7 @@ u = 1e-3
 nss = [10,20,50]
 palette_indices = [6,4,2]
 ns_vals = np.arange(10,201,10)
-ns_ref = 50
+ns_ref = 20
 
 InterestingLengths = np.arange(50,T,50)
 
@@ -153,26 +154,18 @@ for x0_idx,cur_x0 in enumerate(x0s):
         CurEst = CurEst[np.isfinite(CurEst)]
         EmpiVar_V[t_idx] = np.var(CurEst)
 
-
-    ref_IV = DeterIV ** (-2)
-    # ref_IV = ref_IV / ref_IV[0] * EmpiVar_V[0]
-    ref_IV = ref_IV / ref_IV[np.where(t == InterestingLengths[2])[0][0] - 2] * EmpiVar_V[np.where(t == InterestingLengths[2])[0][0] - 2]
+    EmpiVar_V_log = np.log(EmpiVar_V)
+    popt_V = curve_fit(Functions.V_fit_model, np.log(DeterIV), EmpiVar_V_log, p0=EmpiVar_V_log[0])
 
     InterestingEstVar = np.zeros(len(InterestingLengths))
     InterestingV = np.zeros(len(InterestingLengths))
     for T_idx,T_interest in enumerate(InterestingLengths):
         InterestingV[T_idx] = DeterIV[np.where(t == T_interest)[0][0] - 2]
         InterestingEstVar[T_idx] = AnalyticalVar_V[np.where(t == T_interest)[0][0] - 2]
-        # InterestingEstVar[T_idx] = EmpiVar_V[np.where(t == T_interest)[0][0] - 2]
 
-
-    # cur_ax.semilogy(DeterIV,AnalyticalVar_V,linewidth=lw,color='C9',label='Analytical',zorder=1)
-    # cur_ax.semilogy(InterestingV,InterestingEstVar,marker="^",ms=MarkerSize,linestyle='None',color='C9',label='Empirical',zorder=3)
-    # cur_ax.semilogy(DeterIV,ref_IV,linewidth=lw,linestyle='--',color='C7',label='Scaled $V^{-2}$',zorder=2)
     cur_ax.semilogy(DeterIV,EmpiVar_V,linewidth=lw,color=Palette[1],label='Empirical')
     cur_ax.semilogy(InterestingV,InterestingEstVar,linewidth=lw,color=Palette[0],label='Analytical',linestyle='none',marker='o',ms=MarkerSize)
-    cur_ax.semilogy(DeterIV,ref_IV,linewidth=lw,linestyle='--',color='grey',label='Scaled $V^{-2}$',zorder=3)
-    # cur_ax.set_xlim((0,np.max(DeterIV)+2))
+    cur_ax.semilogy(DeterIV,np.exp(popt_V[0])/(DeterIV**2),linewidth=lw,linestyle='--',color='grey',label='Scaled $V^{-2}$',zorder=3)
     cur_ax.set_xlim((0,60))
     cur_ax.set_ylim((1e-6,1e-2))
     if x0_idx == len(x0s)-1:
@@ -204,15 +197,12 @@ for x0_idx,cur_x0 in enumerate(x0s):
         ests = ests[np.isfinite(ests)]
         EmpiVar_ns[ns_idx] = np.var(ests)
         
-    ref_ns = 1/ns_vals
-    ref_ns = ref_ns / ref_ns[0] * EmpiVar_ns[0]
-
-    # cur_ax.semilogy(ns_vals,AnalyticalVar_ns,linewidth=lw,color='C9',label='Analytical',zorder=1)
-    # cur_ax.semilogy(InterestingSampleSize,InterestingEstVar,marker="^",ms=MarkerSize,linestyle='None',color='C9',label='Empirical',zorder=3)
-    # cur_ax.semilogy(ns_vals,ref_ns,linewidth=lw,linestyle='--',color='C7',label='Scaled $n_s^{-1}$',zorder=2)
+    EmpiVar_ns_log = np.log(EmpiVar_ns)
+    popt_ns = curve_fit(Functions.ns_fit_model, np.log(ns_vals), EmpiVar_ns_log, p0=EmpiVar_ns_log[0])
+    
     cur_ax.semilogy(ns_vals,EmpiVar_ns,linewidth=lw,color=Palette[1],label='Empirical')
     cur_ax.semilogy(ns_vals,AnalyticalVar_ns,linewidth=lw,color=Palette[0],label='Analytical',linestyle='none',marker='o',ms=MarkerSize)
-    cur_ax.semilogy(ns_vals,ref_ns,linewidth=lw,linestyle='--',color='grey',label='Scaled $n_s^{-1}$',zorder=3)
+    cur_ax.semilogy(ns_vals,np.exp(popt_ns[0])/ns_vals,linewidth=lw,linestyle='--',color='grey',label='Scaled $n_s^{-1}$',zorder=3)
     cur_ax.set_xlim((0,np.max(ns_vals)+10))
     cur_ax.set_ylim((1e-7,1e-4))
     if x0_idx == len(x0s)-1:
@@ -241,6 +231,6 @@ plt.tight_layout()
 
 
 if save_flag:
-    plt.savefig('./Figures/SuppFig2_Various_x0.jpg',dpi=dpi_val,bbox_inches='tight')
+    plt.savefig('./Figures/SuppFig2_Various_x0.pdf',dpi=dpi_val,bbox_inches='tight')
 
 

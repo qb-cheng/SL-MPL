@@ -16,7 +16,9 @@ if __name__ == '__main__':
         os.mkdir(PopulationDir)
     
     # Sets = np.array([0,1,2,10,11,12,20,21,22,30,31,32,40,41,42])
-    Sets = np.arange(601,631)
+    # Sets = np.arange(601,631)
+    # Sets = np.array([2102,2103,2202,2203])
+    Sets = np.array([3111,3121])+4
     
     for thisSet in Sets:
         print("EvoGen: Set" + str(thisSet) + " -->")

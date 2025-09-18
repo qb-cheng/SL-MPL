@@ -10,10 +10,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker 
 import seaborn as sns
-
+from scipy.optimize import curve_fit
 
 save_flag = True
-dpi_val = 350
+dpi_val = 600
 FontSize = 14
 MarkerSize = 4
 lw = 1.5
@@ -137,8 +137,10 @@ for set_idx,thisSet in enumerate(Sets):
     # Plot the empirical and analytical sampling-only and drift-only variance to 
     # show that our analytical approximation works
     cur_ax = axes[set_idx,2]
+    EmpiVar_V_log = np.log(SamplingVar_empirical)
+    popt_V = curve_fit(Functions.V_fit_model, np.log(DeterIV), EmpiVar_V_log, p0=EmpiVar_V_log[0])
     line1 = cur_ax.semilogy(t[2:],SamplingVar_empirical,color='C0',linewidth=lw,zorder=1)
-    line2 = cur_ax.semilogy(t[2:],1 / (DeterIV**2) * SamplingVar_analytical[5] * (DeterIV[5]**2),color=Palette[7],linewidth=lw,zorder=0,linestyle='--')
+    line2 = cur_ax.semilogy(t[2:],np.exp(popt_V[0])/(DeterIV**2),color=Palette[7],linewidth=lw,zorder=0,linestyle='--')
     line3 = cur_ax.semilogy(t[2:],DriftVar_empirical,color='C2',linewidth=lw,zorder=1)
     line4 = cur_ax.semilogy(t[2:],CRLB,color='C3',linewidth=lw,zorder=2,linestyle='dotted')
     line5 = cur_ax.semilogy(t[2:],1 / (N * DeterIV),color='C4',linewidth=lw,zorder=0,linestyle='--')
@@ -169,4 +171,4 @@ plt.tight_layout()
 
 
 if save_flag:
-    plt.savefig('./Figures/SuppFig6_EstMeanVarSto_x0.jpg',dpi=dpi_val,bbox_inches='tight')
+    plt.savefig('./Figures/SuppFig6_EstMeanVarSto_x0.pdf',dpi=dpi_val,bbox_inches='tight')

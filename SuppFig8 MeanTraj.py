@@ -16,7 +16,7 @@ import matplotlib.ticker as ticker
 
 save_flag = True
 
-dpi_val = 350
+dpi_val = 600
 
 FigSizeR = 4
 FontSize = 14
@@ -71,4 +71,4 @@ plt.subplots_adjust(wspace=0.5/15,hspace=0.5/10)
 
 
 if save_flag:
-    plt.savefig('./Figures/SuppFig8_MeanTraj.jpg',dpi=dpi_val,bbox_inches='tight')
+    plt.savefig('./Figures/SuppFig8_MeanTraj.pdf',dpi=dpi_val,bbox_inches='tight')

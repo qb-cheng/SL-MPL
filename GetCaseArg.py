@@ -70,6 +70,15 @@ def GetCaseInfo(SetID):
         NumItr = 100000
         InitialAlleleFreq = 0.1
         
+    elif SetID == 14:
+        N = 1000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 100000
+        InitialAlleleFreq = 0.1
+        
+        
     elif SetID == 20:
         N = 2000
         SC = 0.01
@@ -1481,6 +1490,633 @@ def GetCaseInfo(SetID):
         T = 901
         NumItr = 10000
         InitialAlleleFreq = 0.5
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    elif SetID == 2101:
+        N = 1000
+        SC = 0.001
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2102:
+        N = 1000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2103:
+        N = 1000
+        SC = 0.005
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2104:
+        N = 1000
+        SC = 0.01
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2105:
+        N = 1000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+        
+    elif SetID == 2111:
+        N = 1000
+        SC = 0.001
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2112:
+        N = 1000
+        SC = 0.002
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2113:
+        N = 1000
+        SC = 0.005
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2114:
+        N = 1000
+        SC = 0.01
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2115:
+        N = 1000
+        SC = 0.02
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+        
+        
+    elif SetID == 2201:
+        N = 10000
+        SC = 0.001
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2202:
+        N = 10000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2203:
+        N = 10000
+        SC = 0.005
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2204:
+        N = 10000
+        SC = 0.01
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2205:
+        N = 10000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2211:
+        N = 10000
+        SC = 0.001
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2212:
+        N = 10000
+        SC = 0.002
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2213:
+        N = 10000
+        SC = 0.005
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2214:
+        N = 10000
+        SC = 0.01
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2215:
+        N = 10000
+        SC = 0.02
+        u = 1e-6
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+        
+    elif SetID == 2302:
+        N = 5000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2402:
+        N = 50000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+          
+    elif SetID == 2502:
+        N = 100000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2503:
+        N = 100000
+        SC = 0.005
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2504:
+        N = 100000
+        SC = 0.01
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 2505:
+        N = 100000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+        
+        
+    elif SetID == 3101:
+        N = 1000
+        SC = 1e-5
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3102:
+        N = 1000
+        SC = 1e-4
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3103:
+        N = 1000
+        SC = 1e-3
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3104:
+        N = 1000
+        SC = 1e-2
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3105:
+        N = 1000
+        SC = 1e-1
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3111:
+        N = 10000
+        SC = 1e-5
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3112:
+        N = 10000
+        SC = 1e-4
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3113:
+        N = 10000
+        SC = 1e-3
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3114:
+        N = 10000
+        SC = 1e-2
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3115:
+        N = 10000
+        SC = 1e-1
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3121:
+        N = 100000
+        SC = 1e-5
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3122:
+        N = 100000
+        SC = 1e-4
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3123:
+        N = 100000
+        SC = 1e-3
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3124:
+        N = 100000
+        SC = 1e-2
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3125:
+        N = 100000
+        SC = 1e-1
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+        
+    elif SetID == 3201:
+        N = 1000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3202:
+        N = 1000
+        SC = 0.005
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3203:
+        N = 1000
+        SC = 0.01
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3204:
+        N = 1000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3205:
+        N = 1000
+        SC = 0.05
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3211:
+        N = 5000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3212:
+        N = 5000
+        SC = 0.005
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3213:
+        N = 5000
+        SC = 0.01
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3214:
+        N = 5000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3215:
+        N = 5000
+        SC = 0.05
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3221:
+        N = 10000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3222:
+        N = 10000
+        SC = 0.005
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3223:
+        N = 10000
+        SC = 0.01
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3224:
+        N = 10000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3225:
+        N = 10000
+        SC = 0.05
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3231:
+        N = 50000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3232:
+        N = 50000
+        SC = 0.005
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3233:
+        N = 50000
+        SC = 0.01
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3234:
+        N = 50000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 3235:
+        N = 50000
+        SC = 0.05
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+        
+        
+    elif SetID == 4101:
+        N = 1000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 4102:
+        N = 1000
+        SC = 0.02
+        u = 1e-8
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 4111:
+        N = 1000
+        SC = 0.05
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 4112:
+        N = 1000
+        SC = 0.05
+        u = 1e-8
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 4121:
+        N = 1000
+        SC = 0.01
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 4122:
+        N = 1000
+        SC = 0.01
+        u = 1e-8
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 4131:
+        N = 1000
+        SC = 0.005
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 4132:
+        N = 1000
+        SC = 0.005
+        u = 1e-8
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 4141:
+        N = 1000
+        SC = 0.002
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+    elif SetID == 4142:
+        N = 1000
+        SC = 0.002
+        u = 1e-8
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.1
+        
+        
+        
+    elif SetID == 4201:
+        N = 1000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.3
+        
+    elif SetID == 4202:
+        N = 1000
+        SC = 0.02
+        u = 1e-8
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.3
+        
+    elif SetID == 4301:
+        N = 1000
+        SC = 0.02
+        u = 1e-3
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.5
+        
+    elif SetID == 4302:
+        N = 1000
+        SC = 0.02
+        u = 1e-8
+        T = 451
+        NumItr = 10000
+        InitialAlleleFreq = 0.5
+        
+    
+        
+   
+        
+        
         
         
     else:

@@ -15,7 +15,7 @@ import seaborn as sns
 from scipy.interpolate import interp1d
 
 save_flag = True
-dpi_val = 350
+dpi_val = 600
 FontSize = 14
 MarkerSize = 3
 lw = 1.5
@@ -26,17 +26,17 @@ ns = 20
 T_interests = [51,151,301]
 N_indices = [0,1,2] # Different values of population sizes used to simulate the WF trajectories
 
-x_values = np.linspace(0.005,0.0525,1001)
+x_values = np.linspace(0.0005,0.0525,1001)
 EstVar_ref = (x_values/2)**2 
 # Assuming that the estimates are normally distributed, 
 # the empirical standard deviation should not exceed half of 
 # the true selection coefficient in order to fit within the 5% significance level
-xmin = 0.003
-xmax = 0.052
+xmin = 0.0005
+xmax = 0.0525
 ymin = 2e-6
 ymax = 1e-2
 
-fig,axes = plt.subplots(len(T_interests),len(N_indices),figsize=(15,12),dpi=dpi_val)
+fig,axes = plt.subplots(len(T_interests),len(N_indices),figsize=(15,4*len(T_interests)),dpi=dpi_val)
 for T_idx,CurT in enumerate(T_interests):
     for N_idx in N_indices:
         CurSets = np.arange(600 + N_idx*10 + 1, 600 + N_idx*10 + 11)
@@ -104,4 +104,4 @@ plt.tight_layout()
 plt.subplots_adjust(wspace=0.5/12,hspace=0.5/12)
 
 if save_flag:
-    plt.savefig('./Figures/SuppFig11_PracticalImplication.jpg',dpi=dpi_val,bbox_inches='tight')
+    plt.savefig('./Figures/SuppFig12_PracticalImplication.pdf',dpi=dpi_val,bbox_inches='tight')

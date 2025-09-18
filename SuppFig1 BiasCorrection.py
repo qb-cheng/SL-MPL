@@ -13,7 +13,7 @@ import pandas as pd
 
 
 save_flag = True
-dpi_val = 350
+dpi_val = 600
 FontSize = 14
 MarkerSize = 2
 lw = 1.5
@@ -131,4 +131,4 @@ plt.tight_layout()
 
 
 if save_flag:
-    plt.savefig('./Figures/SuppFig1_BiasCorrection.jpg',dpi=dpi_val,bbox_inches='tight')  
+    plt.savefig('./Figures/SuppFig1_BiasCorrection.pdf',dpi=dpi_val,bbox_inches='tight')  

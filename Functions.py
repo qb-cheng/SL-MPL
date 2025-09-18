@@ -473,3 +473,17 @@ def Customized_MPL_HMM(ObservedCounts,N,ns_array,D,x0,ObGens,u,TrainingConvergen
     ).x
 
     return mle, (ci_lower, ci_upper)
+
+
+
+# Curve fitting functions for 1/ns and 1/V^2
+def ns_fit_model(log_x, log_k):
+    return log_k - log_x
+
+def V_fit_model(log_x, log_k):
+    return log_k - 2 * log_x
+
+
+
+
+

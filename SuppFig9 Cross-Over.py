@@ -14,7 +14,7 @@ import matplotlib.ticker as ticker
 
 
 save_flag = True
-dpi_val = 350
+dpi_val = 600
 FontSize = 14
 lw = 1.5
 
@@ -112,4 +112,4 @@ plt.tight_layout()
 plt.subplots_adjust(wspace=0.1,hspace=0.1)
 
 if save_flag:
-    plt.savefig('./Figures/SuppFig9_CrossOver.jpg',dpi=dpi_val,bbox_inches='tight')  
+    plt.savefig('./Figures/SuppFig9_CrossOver.pdf',dpi=dpi_val,bbox_inches='tight')  
